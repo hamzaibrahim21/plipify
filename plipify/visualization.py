@@ -19,7 +19,7 @@ import pymol
 import seaborn as sns
 from pymol import cmd, util
 
-from plipify.core import Structure
+from .core import Structure
 
 INTERACTION_PALETTE = {
     "hbond-don": "#0173b2",
@@ -34,14 +34,16 @@ INTERACTION_PALETTE = {
 }
 
 
-def fingerprint_barplot(fingerprint_df):
+def fingerprint_barplot(fingerprint_df, file_path=None):
     """
-    Visualize fingerprint as barplot either based on count or fp_type.
+    Visualize fingerprint as barplot either based on count or fp_type. Optionally, save the figure to a file.
 
     Parameters
     ----------
-    fp_data = fingerpint in dataframe form
-
+    fingerprint_df : DataFrame
+        Fingerprint in dataframe form
+    file_path : str, optional
+        Path where the figure image will be saved. If not provided, the figure is not saved.
     """
     fig = go.Figure(
         data=[
@@ -53,12 +55,21 @@ def fingerprint_barplot(fingerprint_df):
             for interaction in sorted(fingerprint_df.columns, reverse=True)
         ],
     )
-    # Change the bar mode
     fig.update_layout(
         barmode="stack",
         title_text="Residue Interactions",
-        yaxis_title="Interactions",
+        title_font_size=24,
+        yaxis_title="Interaction Frequency",
+        yaxis_title_font_size=20,
         xaxis_title="Residues",
+        xaxis_title_font_size=20,
+        xaxis_tickfont_size=20,
+        yaxis_tickfont_size=20,
+        height=600,
+        width=1200,
+        legend_title_text='Interaction Type',
+        legend_title_font_size=20,
+        legend_font_size=18,
     )
     fig.update_xaxes(type="category")
 
